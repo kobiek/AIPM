@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r ai_product_manager/requirements.txt
+          pip install -e ai_product_manager
+
+      - name: Apply DB migrations
+        run: |
+          python -m ai_product_manager.tools.migrate upgrade head
+
+      - name: Check migration drift
+        run: |
+          python -m ai_product_manager.tools.check_migrations
+
+      - name: Run tests
+        run: |
+          python -m pytest ai_product_manager/tests -v
+
+      - name: Lint (basic)
+        run: |
+          python -m pip install flake8
+          flake8 ai_product_manager --max-line-length=120 --exclude ui/.venv

@@ -1,0 +1,34 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg-info/
+.eggs/
+.dist/
+build/
+dist/
+.env
+.venv
+venv/
+.envrc
+.pytest_cache/
+.coverage
+htmlcov/
+
+# IDEs/Editors
+.vscode/
+.idea/
+*.swp
+.DS_Store
+
+# Streamlit
+ai_product_manager/ui/.streamlit/
+
+# Artifacts and local DB
+artifacts/
+aipm.db
+
+# Alembic cache
+alembic.ini.bak
